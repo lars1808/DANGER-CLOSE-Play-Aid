@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>DANGER CLOSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Victor+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    /* ─── Theme tokens ─────────────────────────────────────────── */
+    :root {
+      --bg:         #e8e6e0;
+      --surface:    #f0eeea;
+      --surface-2:  #e2e0da;
+      --surface-3:  #d4d2cc;
+      --border:     #c2c0ba;
+      --border-2:   #aeaca6;
+      --text:       #1a1816;
+      --text-2:     #484642;
+      --text-3:     #888680;
+      --red:        #b82a12;
+      --red-bg:     #f0e8e4;
+      --amber:      #a05000;
+      --amber-bg:   #f0e8da;
+      --green:      #1a6e3a;
+      --green-bg:   #e0ede6;
+      --blue:       #1a44c0;
+      --blue-bg:    #e2e8f4;
+      --shadow:     0 1px 2px rgba(0,0,0,.06);
+      --shadow-md:  0 3px 8px rgba(0,0,0,.10);
+      --font-mono:  'Victor Mono', 'Courier New', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:         #0e0c0a;
+      --surface:    #161411;
+      --surface-2:  #1e1b18;
+      --surface-3:  #272420;
+      --border:     #302d28;
+      --border-2:   #3e3b36;
+      --text:       #e4e0d8;
+      --text-2:     #989288;
+      --text-3:     #585450;
+      --red:        #e84828;
+      --red-bg:     #250e08;
+      --amber:      #e8a000;
+      --amber-bg:   #221600;
+      --green:      #38a864;
+      --green-bg:   #0a1e10;
+      --blue:       #5a8af8;
+      --blue-bg:    #0a1430;
+      --shadow:     0 1px 3px rgba(0,0,0,.4);
+      --shadow-md:  0 4px 8px rgba(0,0,0,.5);
+      --font-mono:  'Victor Mono', 'Courier New', monospace;
+    }
+
+    /* ─── Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      font-size: 14px;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Scrollbar ─────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+
+    /* ─── Layout ─────────────────────────────────────────────────── */
+    .app-shell { display: flex; flex-direction: column; height: 100%; }
+    .topnav {
+      display: flex; align-items: center; gap: 4px;
+      padding: 0 16px; height: 52px; flex-shrink: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topnav-brand {
+      font-size: 13px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text);
+      margin-right: auto; white-space: nowrap;
+    }
+    .topnav-brand span { color: var(--red); }
+    .nav-btn {
+      padding: 5px 12px; border-radius: 6px; border: none;
+      background: transparent; color: var(--text-2);
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .12s, color .12s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover  { background: var(--surface-2); color: var(--text); }
+    .nav-btn.active { background: var(--surface-3); color: var(--text); font-weight: 600; }
+    .nav-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+    .icon-btn {
+      width: 32px; height: 32px; border-radius: 6px; border: none;
+      background: transparent; color: var(--text-2);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .12s, color .12s; flex-shrink: 0;
+    }
+    .icon-btn:hover { background: var(--surface-2); color: var(--text); }
+    .screen { flex: 1; overflow-y: auto; }
+
+    /* ─── Typography ────────────────────────────────────────────── */
+    .label {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-3);
+    }
+    .section-title {
+      font-size: 12px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-3);
+    }
+
+    /* ─── Cards / surfaces ──────────────────────────────────────── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+    .card-sm {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+    .inset { background: var(--surface-2); border: 1px solid var(--border); border-radius: 2px; }
+
+    /* ─── Inputs ─────────────────────────────────────────────────── */
+    .dc-input {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 5px 8px; color: var(--text);
+      font-family: inherit; font-size: 13px; outline: none;
+      transition: border-color .12s;
+      width: 100%;
+    }
+    .dc-input:focus { border-color: var(--border-2); }
+    .dc-input::placeholder { color: var(--text-3); }
+    .dc-textarea {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 7px 9px; color: var(--text);
+      font-family: inherit; font-size: 13px; outline: none;
+      resize: vertical; width: 100%; min-height: 60px;
+      transition: border-color .12s;
+    }
+    .dc-textarea:focus { border-color: var(--border-2); }
+
+    /* ─── Select ─────────────────────────────────────────────────── */
+    .dc-select {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 6px; color: var(--text);
+      font-family: inherit; font-size: 12px; font-weight: 500;
+      outline: none; cursor: pointer; appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a8a29e'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      padding-right: 20px;
+      transition: border-color .12s;
+    }
+    .dc-select:focus { border-color: var(--border-2); }
+    /* Compact select for trooper rows */
+    .dc-select-sm {
+      font-size: 11px; padding: 3px 18px 3px 6px;
+    }
+
+    /* ─── Stepper ─────────────────────────────────────────────────── */
+    .stepper {
+      display: inline-flex; align-items: center; gap: 1px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden;
+    }
+    .stepper-btn {
+      width: 22px; height: 26px; border: none; background: transparent;
+      color: var(--text-2); font-size: 14px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .1s, color .1s; line-height: 1; user-select: none;
+    }
+    .stepper-btn:hover { background: var(--surface-3); color: var(--text); }
+    .stepper-val {
+      min-width: 22px; text-align: center; font-size: 12px; font-weight: 600;
+      color: var(--text); padding: 0 2px;
+    }
+
+    /* ─── Buttons ─────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: 7px; border: none;
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .12s, color .12s, opacity .12s;
+      white-space: nowrap;
+    }
+    .btn:disabled { opacity: .45; pointer-events: none; }
+    .btn-primary { background: var(--text); color: var(--bg); }
+    .btn-primary:hover { opacity: .85; }
+    .btn-secondary {
+      background: var(--surface-2); color: var(--text-2);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--surface-3); color: var(--text); }
+    .btn-ghost { background: transparent; color: var(--text-2); }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--text); }
+    .btn-danger { background: var(--red-bg); color: var(--red); border: 1px solid color-mix(in srgb, var(--red) 20%, transparent); }
+    .btn-danger:hover { background: color-mix(in srgb, var(--red-bg) 80%, var(--red) 20%); }
+    .btn-sm { padding: 4px 9px; font-size: 12px; border-radius: 6px; }
+    .btn-xs { padding: 2px 7px; font-size: 11px; border-radius: 5px; }
+
+    /* ─── Tags / badges ─────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 7px; border-radius: 99px; font-size: 11px; font-weight: 600;
+    }
+    .badge-red    { background: var(--red-bg);   color: var(--red); }
+    .badge-amber  { background: var(--amber-bg);  color: var(--amber); }
+    .badge-green  { background: var(--green-bg);  color: var(--green); }
+    .badge-neutral{ background: var(--surface-3); color: var(--text-2); }
+    .badge-blue   { background: var(--blue-bg);   color: var(--blue); }
+
+    /* ─── Status color classes ──────────────────────────────────── */
+    select.status-ok       { color: var(--green); }
+    select.status-grazed   { color: var(--amber); }
+    select.status-wounded  { color: var(--amber); }
+    select.status-bleeding { color: var(--red); font-weight: 700; }
+    select.status-dead     { color: var(--text-3); }
+
+    /* ─── Momentum colors ───────────────────────────────────────── */
+    select.mom-defeat   { color: var(--red); font-weight: 700; }
+    select.mom-bad      { color: var(--amber); }
+    select.mom-neutral  { color: var(--text-2); }
+    select.mom-good     { color: var(--green); }
+    select.mom-victory  { color: var(--green); font-weight: 700; }
+
+    /* ─── Content colors ────────────────────────────────────────── */
+    select.content-threat  { color: var(--red); }
+    select.content-safe    { color: var(--text-2); }
+    select.content-cleared { color: var(--green); }
+
+    /* ─── Suppressed pill ───────────────────────────────────────── */
+    .supp-pill {
+      display: inline-flex; align-items: center; padding: 2px 8px;
+      border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: .03em;
+      cursor: pointer; border: 1px solid var(--border); user-select: none;
+      transition: background .12s, color .12s, border-color .12s;
+      background: var(--surface-2); color: var(--text-3);
+    }
+    .supp-pill.active {
+      background: var(--red-bg); color: var(--red);
+      border-color: color-mix(in srgb, var(--red) 30%, transparent);
+    }
+
+    /* ─── Trooper row ───────────────────────────────────────────── */
+    .trooper-row {
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+    }
+    .trooper-row:last-child { border-bottom: none; }
+    .trooper-row-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr 1fr auto auto auto auto auto;
+      gap: 6px; align-items: center;
+    }
+    .trooper-row-expand { padding: 10px 14px 12px; border-top: 1px solid var(--border); }
+    .trooper-name {
+      font-size: 13px; font-weight: 600; color: var(--text);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .trooper-name-dead { color: var(--text-3); text-decoration: line-through; }
+    .stat-badge {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1px; text-align: center;
+    }
+    .stat-badge-val { font-size: 12px; font-weight: 600; color: var(--text); }
+    .stat-badge-lbl { font-size: 10px; color: var(--text-3); line-height: 1; }
+
+    /* ─── Sector row ────────────────────────────────────────────── */
+    .sector-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden; margin-bottom: 6px;
+    }
+    .sector-main {
+      display: grid;
+      grid-template-columns: 130px 1fr 1fr 1fr 1fr auto auto;
+      gap: 6px; align-items: center;
+      padding: 8px 12px;
+    }
+    .sector-name-input {
+      font-size: 13px; font-weight: 600; background: transparent;
+      border: none; outline: none; color: var(--text); width: 100%;
+      font-family: inherit;
+    }
+    .sector-name-input::placeholder { color: var(--text-3); }
+
+    /* ─── Misc ───────────────────────────────────────────────────── */
+    .divider { border: none; border-top: 1px solid var(--border); }
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; padding: 48px 24px; color: var(--text-3); text-align: center;
+    }
+    .empty-state-icon { font-size: 28px; opacity: .5; }
+    .toggle {
+      display: flex; border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
+    }
+    .toggle-btn {
+      padding: 5px 12px; border: none; background: transparent;
+      font-family: inherit; font-size: 12px; font-weight: 500; color: var(--text-2);
+      cursor: pointer; transition: background .12s, color .12s;
+    }
+    .toggle-btn.active { background: var(--surface-3); color: var(--text); }
+    .toggle-btn:hover:not(.active) { background: var(--surface-2); }
+
+    /* mission header fields row */
+    .mission-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 680px) {
+      .trooper-row-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto auto;
+      }
+      .trooper-name-cell { grid-column: 1 / -1; }
+      .sector-main {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto auto;
+      }
+      .topnav-brand { font-size: 11px; }
+      .nav-btn { padding: 4px 8px; font-size: 12px; }
+    }
+
+    /* ─── Overlay / modal ─────────────────────────────────────────── */
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 16px;
+    }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: var(--shadow-md);
+      max-width: 480px; width: 100%; max-height: 90vh;
+      overflow-y: auto; padding: 20px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+
+    /* gear tag chip */
+    .gear-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 2px; font-size: 11px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--text-2); white-space: nowrap;
+    }
+
+    /* ─── Tooltip ──────────────────────────────────────────────────── */
+    .dc-tooltip-wrap { position: relative; display: inline-flex; align-items: center; }
+    .dc-tooltip {
+      position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+      background: var(--text); color: var(--bg); font-size: 11px; line-height: 1.5;
+      padding: 7px 10px; border-radius: 3px; white-space: normal; width: 200px;
+      pointer-events: none; z-index: 300; box-shadow: var(--shadow-md);
+    }
+    .dc-tooltip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: var(--text);
+    }
+
+    /* ─── Momentum tracker ─────────────────────────────────────────── */
+    .mom-track { display: flex; border: 1px solid var(--border); overflow: hidden; border-radius: 2px; }
+    .mom-seg {
+      flex: 1; padding: 5px 2px; border: none; border-right: 1px solid var(--border);
+      font-family: inherit; font-size: 9px; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; text-align: center; cursor: pointer;
+      transition: background .1s, color .1s; line-height: 1.2;
+    }
+    .mom-seg:last-child { border-right: none; }
+
+    /* ─── Active sector + warning row ─────────────────────────────── */
+    .sector-card.sector-active { border-left: 3px solid var(--green); }
+    .sector-activate-btn {
+      width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border-2);
+      background: transparent; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; transition: all .12s; padding: 0;
+    }
+    .sector-activate-btn:hover { border-color: var(--green); }
+    .sector-activate-btn.active { border-color: var(--green); background: var(--green); }
+    .trooper-row-warned { background: var(--amber-bg); }
+
+    /* ─── Pulse animation ───────────────────────────────────────────── */
+    @keyframes pulse-red {
+      0%   { background-color: transparent; }
+      25%  { background-color: var(--red-bg); }
+      60%  { background-color: color-mix(in srgb, var(--red-bg) 70%, var(--red) 15%); }
+      100% { background-color: transparent; }
+    }
+    .pulse-red { animation: pulse-red .65s ease-out; }
+
+    /* ─── Military terminal aesthetic ──────────────────────────────── */
+
+    /* Victor Mono for tactical labels, headers, identifiers */
+    .topnav-brand, h1, h2, h3, .modal-title, .label, .section-title,
+    .badge, .stepper-val, .stat-badge-val, .stat-badge-lbl,
+    .gear-chip, .supp-pill { font-family: var(--font-mono); }
+
+    /* Tabular numbers everywhere */
+    body { font-variant-numeric: tabular-nums; }
+
+    /* Label refinements */
+    .label         { letter-spacing: .05em; font-size: 10px; font-weight: 600; }
+    .section-title { letter-spacing: .08em; font-size: 10px; font-weight: 700; }
+
+    /* Brand */
+    .topnav-brand  { letter-spacing: .14em; font-size: 11px; font-weight: 700; }
+
+    /* Nav tighter */
+    .topnav        { height: 44px; border-bottom: 1px solid var(--border); }
+    .nav-btn       { font-size: 12px; padding: 4px 10px; border-radius: 2px; }
+    .nav-btn.active { background: var(--surface-3); }
+
+    /* Near-zero radii — angular console feel */
+    .card, .card-sm, .inset { border-radius: 1px; box-shadow: none; }
+    .btn                    { border-radius: 2px; }
+    .btn-sm, .btn-xs        { border-radius: 1px; font-size: 11px; }
+    .dc-input, .dc-textarea { border-radius: 2px; font-size: 12px; padding: 4px 7px; }
+    .dc-textarea            { padding: 6px 8px; }
+    .dc-select              { border-radius: 2px; font-size: 11px; }
+    .badge                  { border-radius: 1px; padding: 1px 5px; letter-spacing: .04em; font-size: 10px; }
+    .stepper                { border-radius: 2px; }
+    .stepper-btn            { font-size: 13px; }
+    .modal                  { border-radius: 3px; }
+    .toggle                 { border-radius: 2px; }
+    .toggle-btn             { border-radius: 0; font-size: 11px; }
+    .sector-card            { border-radius: 1px; }
+    .gear-chip              { border-radius: 1px; font-size: 10px; letter-spacing: .03em; }
+    .supp-pill              { border-radius: 2px; font-size: 10px; letter-spacing: .06em; height: 26px; display: inline-flex; align-items: center; }
+    .icon-btn               { border-radius: 2px; }
+
+    /* Flat panel cards */
+    .card, .card-sm { border: 1px solid var(--border); box-shadow: none; }
+
+    /* Inputs: tighter, flatter */
+    .dc-input, .dc-textarea, .dc-select { border-color: var(--border); background: var(--surface-2); }
+    .dc-input:focus, .dc-textarea:focus { border-color: var(--border-2); }
+
+    /* Compact trooper rows */
+    .trooper-row { padding: 6px 12px; }
+
+    /* Screen h1 */
+    h1 { letter-spacing: .08em; text-transform: uppercase; font-size: 15px !important; font-weight: 700; }
+
+    /* Momentum segments */
+    .mom-seg { font-family: var(--font-mono); letter-spacing: .05em; font-size: 7.5px; }
+
+    /* Sector name */
+    .sector-name-input { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+    /* ─── Mobile / hamburger ────────────────────────────────────────── */
+    .topnav-nav     { display: flex; align-items: center; gap: 4px; }
+    .hamburger-btn  { display: none; }
+    .mobile-menu {
+      position: fixed; top: 44px; left: 0; right: 0; z-index: 150;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 8px 12px; display: flex; flex-direction: column; gap: 2px;
+      box-shadow: var(--shadow-md);
+    }
+    .mobile-menu .nav-btn { text-align: left; padding: 10px 12px; font-size: 13px; border-radius: 2px; }
+
+    @media (max-width: 640px) {
+      .topnav-nav     { display: none; }
+      .hamburger-btn  { display: flex; }
+      .topnav         { padding: 0 10px; gap: 2px; }
+      .topnav-brand   { font-size: 10px; letter-spacing: .10em; }
+
+      /* Trooper rows: allow wrap, tighter */
+      .trooper-row { padding: 6px 8px; }
+
+      /* Screen padding */
+      .screen > div > div[style] { padding-left: 8px !important; padding-right: 8px !important; }
+    }
+
+    @media (max-width: 480px) {
+      .icon-btn { width: 26px; height: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="dc-data.js"></script>
+  <script type="text/babel" src="dc-troopers.jsx"></script>
+  <script type="text/babel" src="dc-equipment.jsx"></script>
+  <script type="text/babel" src="dc-trooper-row.jsx"></script>
+  <script type="text/babel" src="dc-mission.jsx"></script>
+  <script type="text/babel" src="dc-app.jsx"></script>
+</body>
+</html>
