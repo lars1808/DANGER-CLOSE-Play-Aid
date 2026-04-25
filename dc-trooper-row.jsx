@@ -212,6 +212,11 @@ function TrooperRow({ missionTrooper: mt, mission, onUpdate, onRemove, allTroope
   const gearItems = (trooper.gear || []).map(gid => allEquipment.find(e => e.id === gid)).filter(Boolean);
   const tagColors = { Forceful: 'badge-red', Technical: 'badge-blue', Steady: 'badge-amber', Sharp: 'badge-green' };
 
+  const baseMobility = trooper.mobility !== undefined ? trooper.mobility : DC.calcMobility(trooper.gear || [], allEquipment);
+  const statusPenalty = (mt.status === 'Wounded' || mt.status === 'Bleeding Out' || mt.status === 'Dead') ? 1 : 0;
+  const mobility = Math.max(0, baseMobility - statusPenalty);
+  const flankBonus = DC.flankingBonusLabel(mobility);
+
   // Bare counter — fixed-width cell, uppercase bold label, tabular numeral
   function InlineCounter({ label, value, onDec, onInc }) {
     const nudge = {
@@ -246,7 +251,7 @@ function TrooperRow({ missionTrooper: mt, mission, onUpdate, onRemove, allTroope
     React.createElement('div', {
       style: {
         display: 'grid',
-        gridTemplateColumns: '14px 88px 10px 108px 80px 88px 56px 10px 94px 100px 72px 72px 24px',
+        gridTemplateColumns: '14px 130px 10px 90px 78px 88px 52px 10px 80px 86px 60px 60px 80px 24px',
         alignItems: 'center',
         columnGap: 4,
       }
@@ -260,7 +265,7 @@ function TrooperRow({ missionTrooper: mt, mission, onUpdate, onRemove, allTroope
 
       // Name
       React.createElement('span', {
-        style: { fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 13, letterSpacing: '.05em', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }
+        style: { fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11, letterSpacing: '.05em', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }
       }, displayName),
 
       dot,
@@ -291,6 +296,14 @@ function TrooperRow({ missionTrooper: mt, mission, onUpdate, onRemove, allTroope
       React.createElement(InlineCounter, { label: 'ATK',  value: atkDice,  onDec: () => onUpdate({ atkDice: Math.max(0, atkDice - 1) }), onInc: () => onUpdate({ atkDice: atkDice + 1 }) }),
       // DEF
       React.createElement(InlineCounter, { label: 'DEF',  value: defDice,  onDec: () => onUpdate({ defDice: Math.max(0, defDice - 1) }), onInc: () => onUpdate({ defDice: defDice + 1 }) }),
+
+      // MOB / FLANK
+      React.createElement('span', { style: { display: 'flex', alignItems: 'center', gap: 2 } },
+        React.createElement('span', { style: { fontSize: 10, fontWeight: 700, color: 'var(--text-3)', letterSpacing: '.06em', fontFamily: 'var(--font-mono)', marginRight: 2, textTransform: 'uppercase' } }, 'MOB'),
+        React.createElement('span', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text)', fontVariantNumeric: 'tabular-nums', fontFamily: 'var(--font-mono)' } }, mobility),
+        React.createElement('span', { style: { fontSize: 10, color: 'var(--border-2)', fontFamily: 'var(--font-mono)', margin: '0 1px' } }, '→'),
+        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--green)', fontFamily: 'var(--font-mono)', letterSpacing: '.03em' } }, flankBonus)
+      ),
 
       // Remove ×
       React.createElement('button', {
