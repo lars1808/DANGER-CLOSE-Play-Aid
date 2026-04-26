@@ -28,7 +28,7 @@
     { id: 'eq_enviro',        name: 'Environmental Gear',  type: 'Special Equipment', description: 'Withstand dangerous environments or traverse hazardous terrain. One set equips 2 Troopers.', reqCost: 0, mobilityMod: -1, owned: 0 },
   ];
 
-  const TROOPER_TAGS        = ['Forceful', 'Technical', 'Steady', 'Sharp'];
+  const TROOPER_TAGS        = ['—', 'Forceful', 'Technical', 'Steady', 'Sharp'];
   const DUTY_STATUSES       = ['Active Duty', 'Recovering', 'Retired', 'KIA'];
   const STATUSES            = ['OK', 'Grazed', 'Wounded', 'Bleeding Out', 'Dead'];
   const OFFENSIVE_POSITIONS = ['Limited', 'Engaged', 'Flanking'];
@@ -104,11 +104,11 @@
   }
 
   function createTrooper(overrides) {
-    return Object.assign({ id: genId(), name: 'New Trooper', rank: '', callsign: '', squad: '', grit: 1, maxGrit: 3, maxAmmo: 3, mobility: 4, tag: 'Forceful', gear: [], deployed: false, dutyStatus: 'Active Duty', notes: '' }, overrides || {});
+    return Object.assign({ id: genId(), name: 'New Trooper', rank: '', callsign: '', squad: '', grit: 1, maxGrit: 3, maxAmmo: 3, mobility: 4, tag: '—', gear: [], deployed: false, dutyStatus: 'Active Duty', notes: '' }, overrides || {});
   }
 
   function createMission(overrides) {
-    return Object.assign({ id: genId(), name: 'New Mission', status: 'TBD', difficulty: 'Routine', airspace: 'Contested', type: '', objective: '', stakes: '', location: '', notes: '', deployedTroopers: [], sectors: [], createdAt: Date.now() }, overrides || {});
+    return Object.assign({ id: genId(), name: 'New Mission', status: 'TBD', difficulty: 'Routine', airspace: 'Contested', type: '', objective: '', stakes: '', location: '', notes: '', deployedTroopers: [], sectors: [], stealth: 'ACTIVE', engagements: 0, fatigue: 0, createdAt: Date.now() }, overrides || {});
   }
 
   function createMissionTrooper(trooper) {

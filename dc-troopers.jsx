@@ -384,6 +384,7 @@ function TrooperEditModal({ trooper, allTroopers, equipment, onSave, onClose }) 
           ),
           React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginTop: 1 } },
             '→ ', React.createElement('span', { style: { fontWeight: 600, color: 'var(--green)' } }, DC.flankingBonusLabel(computedMobility)),
+            React.createElement('span', { style: { color: 'var(--text-3)', marginLeft: 4 } }, 'Flanking Bonus'),
             React.createElement('span', { style: { color: 'var(--text-3)', marginLeft: 6 } }, '(−1 if Wounded / Bleeding Out / Dead)')
           )
         )

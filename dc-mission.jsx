@@ -267,6 +267,62 @@ function MissionScreen() {
           )
     ),
 
+    // ── Mission Status ───────────────────────────────────────────────────────
+    React.createElement('div', { style: { marginBottom: 16 } },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 } },
+        React.createElement('span', { className: 'section-title' }, 'Mission Status'),
+        React.createElement('div', { style: { flex: 1, height: 1, background: 'var(--border)' } })
+      ),
+      React.createElement('div', {
+        style: {
+          display: 'grid', gridTemplateColumns: '1fr 1fr 1fr',
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 2, overflow: 'hidden',
+        }
+      },
+        // Stealth
+        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRight: '1px solid var(--border)' } },
+          React.createElement('span', { style: { fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 700, letterSpacing: '.06em', color: 'var(--text-3)', textTransform: 'uppercase', flexShrink: 0 } }, 'Stealth:'),
+          React.createElement('button', {
+            style: {
+              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+              fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700,
+              letterSpacing: '.05em', lineHeight: 1,
+              color: (mission.stealth || 'ACTIVE') === 'ACTIVE' ? 'var(--green)' : 'var(--red)',
+            },
+            onClick: () => updateField('stealth', (mission.stealth || 'ACTIVE') === 'ACTIVE' ? 'COMPROMISED' : 'ACTIVE'),
+            title: 'Click to toggle',
+          }, '[' + (mission.stealth || 'ACTIVE') + ']')
+        ),
+        // Engagements
+        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRight: '1px solid var(--border)' } },
+          React.createElement('span', { style: { fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 700, letterSpacing: '.06em', color: 'var(--text-3)', textTransform: 'uppercase', flexShrink: 0 } }, 'Engagements:'),
+          React.createElement('button', {
+            style: { background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)', fontWeight: 600, padding: '0 2px' },
+            onClick: () => updateField('engagements', Math.max(0, (mission.engagements || 0) - 1)),
+          }, '−'),
+          React.createElement('span', { style: { fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'var(--text)', fontVariantNumeric: 'tabular-nums', minWidth: 16, textAlign: 'center', display: 'inline-block' } }, mission.engagements || 0),
+          React.createElement('button', {
+            style: { background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)', fontWeight: 600, padding: '0 2px' },
+            onClick: () => updateField('engagements', (mission.engagements || 0) + 1),
+          }, '+')
+        ),
+        // Fatigue
+        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px' } },
+          React.createElement('span', { style: { fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 700, letterSpacing: '.06em', color: 'var(--text-3)', textTransform: 'uppercase', flexShrink: 0 } }, 'Fatigue:'),
+          React.createElement('button', {
+            style: { background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)', fontWeight: 600, padding: '0 2px' },
+            onClick: () => updateField('fatigue', Math.max(0, (mission.fatigue || 0) - 1)),
+          }, '−'),
+          React.createElement('span', { style: { fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'var(--text)', fontVariantNumeric: 'tabular-nums', minWidth: 16, textAlign: 'center', display: 'inline-block' } }, mission.fatigue || 0),
+          React.createElement('button', {
+            style: { background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)', fontWeight: 600, padding: '0 2px' },
+            onClick: () => updateField('fatigue', (mission.fatigue || 0) + 1),
+          }, '+')
+        )
+      )
+    ),
+
     // ── Sectors ─────────────────────────────────────────────────────────────
     React.createElement('div', { style: { marginBottom: 16 } },
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 } },
