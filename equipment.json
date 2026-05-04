@@ -17,7 +17,7 @@
   { "id": "eq_jump",          "name": "Jump Pack",          "type": "Special Equipment", "description": "Once per Engagement: instantly shift to any Offensive/Defensive position of choice.", "reqCost": 2, "mobilityMod": -1, "owned": 0 },
   { "id": "eq_drone",         "name": "Drone Gear",         "type": "Special Equipment", "description": "+1 to each Advance Roll. Does not stack with multiple Drone Gear.", "reqCost": 0, "mobilityMod": -1, "owned": 0 },
   { "id": "eq_medic",         "name": "Medic Gear",         "type": "Special Equipment", "description": "Patch Wounded Troopers back to OK when out of combat.", "reqCost": 0, "mobilityMod": -1, "owned": 0 },
-  { "id": "eq_radio",         "name": "Radio Gear",         "type": "Special Equipment", "description": "Once per Mission: call artillery strike, hits in 1d2 Exchanges. +2 Momentum, Hard Targets destroyed. All Troopers Mobility Check or 1d3 Injury.", "reqCost": 1, "mobilityMod": -1, "owned": 0 },
+  { "id": "eq_radio",         "name": "Radio Gear",         "type": "Special Equipment", "description": "Required to call in exfil and call in Support. When used in combat, requires Interact[1].", "reqCost": 1, "mobilityMod": -1, "owned": 0 },
   { "id": "eq_supply",        "name": "Supply Backpack",    "type": "Special Equipment", "description": "Holds 6 extra Ammo for redistribution outside of combat.", "reqCost": 1, "mobilityMod": -1, "owned": 0 },
   { "id": "eq_enviro",        "name": "Environmental Gear", "type": "Special Equipment", "description": "Withstand dangerous environments or traverse hazardous terrain. One set equips 2 Troopers.", "reqCost": 0, "mobilityMod": -1, "owned": 0 }
 ]

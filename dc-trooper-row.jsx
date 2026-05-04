@@ -292,10 +292,10 @@ function TrooperRow({ missionTrooper: mt, mission, onUpdate, onRemove, allTroope
       React.createElement(InlineCounter, { label: 'GRIT', value: mt.grit,  onDec: () => onUpdate({ grit: Math.max(0, mt.grit - 1) }),    onInc: () => onUpdate({ grit: Math.min(maxGrit, mt.grit + 1) }) }),
       // AMMO
       React.createElement(InlineCounter, { label: 'AMMO', value: mt.ammo,  onDec: () => onUpdate({ ammo: Math.max(0, mt.ammo - 1) }),    onInc: () => onUpdate({ ammo: Math.min(maxAmmo, mt.ammo + 1) }) }),
-      // ATK
-      React.createElement(InlineCounter, { label: 'ATK',  value: atkDice,  onDec: () => onUpdate({ atkDice: Math.max(0, atkDice - 1) }), onInc: () => onUpdate({ atkDice: atkDice + 1 }) }),
-      // DEF
-      React.createElement(InlineCounter, { label: 'DEF',  value: defDice,  onDec: () => onUpdate({ defDice: Math.max(0, defDice - 1) }), onInc: () => onUpdate({ defDice: defDice + 1 }) }),
+// ATK
+React.createElement(InlineCounter, { label: 'ATK',  value: atkDice,  onDec: () => onUpdate({ atkDice: atkDice - 1 }), onInc: () => onUpdate({ atkDice: atkDice + 1 }) }),
+// DEF
+React.createElement(InlineCounter, { label: 'DEF',  value: defDice,  onDec: () => onUpdate({ defDice: defDice - 1 }), onInc: () => onUpdate({ defDice: defDice + 1 }) }),
 
       // MOB / FLANK
       React.createElement('span', { style: { display: 'flex', alignItems: 'center', gap: 2 } },
